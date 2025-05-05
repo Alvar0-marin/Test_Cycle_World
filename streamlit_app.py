@@ -87,7 +87,7 @@ st.bar_chart(viajes_por_estacion)
 
 # Análisis cruzado con clima
 st.subheader("🌧️ Porcentaje de viajes en días lluviosos")
-df_weather["FECHA"] = pd.to_datetime(df_weather["datetime"]).dt.date
+df_weather["FECHA"] = pd.to_datetime(df_weather["DATETIME"]).dt.date
 df_filtrado["FECHA"] = df_filtrado["FECHA_INICIO"].dt.date
 df_con_clima = pd.merge(df_filtrado, df_weather, on="FECHA", how="left")
 dias_lluvia = df_con_clima[df_con_clima["weather"].isin([3, 4])]
