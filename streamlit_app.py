@@ -25,7 +25,7 @@ connection_parameters = {
 session = Session.builder.configs(connection_parameters).create()
 
 # Carga de datos
-st.cache_data()
+@st.cache_data
 def cargar_datos():
     df_journeys = session.sql("""
         SELECT
@@ -88,8 +88,9 @@ st.bar_chart(viajes_por_estacion)
 # Análisis cruzado con clima
 st.subheader("🌧️ Porcentaje de viajes en días lluviosos")
 df_weather["FECHA"] = pd.to_datetime(df_weather["DATETIME"]).dt.date
-df_filtrado["FECHA"] = df_filtrado["FECHA_INICIO"].dt.date
-df_con_clima = pd.merge(df_filtrado, df_weather, on="FECHA", how="left")
+df_temp = df_filtrado.copy()
+df_temp["FECHA"] = df_temp["FECHA_INICIO"].dt.date
+df_con_clima = pd.merge(df_temp, df_weather, on="FECHA", how="left")
 dias_lluvia = df_con_clima[df_con_clima["weather"].isin([3, 4])]
 porcentaje_lluvia = (len(dias_lluvia) / len(df_con_clima)) * 100
 st.metric("% viajes bajo lluvia", f"{porcentaje_lluvia:.2f}%")
