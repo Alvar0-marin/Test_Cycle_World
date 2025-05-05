@@ -58,6 +58,10 @@ def cargar_datos():
 
 df_journeys, df_weather, df_stations, df_bikes = cargar_datos()
 
+# Conversión de fechas a datetime
+df_journeys["FECHA_INICIO"] = pd.to_datetime(df_journeys["FECHA_INICIO"])
+df_journeys["FECHA_FIN"] = pd.to_datetime(df_journeys["FECHA_FIN"])
+
 # Sidebar: Filtro global por fecha
 with st.sidebar:
     st.header("Filtros Globales")
@@ -89,3 +93,4 @@ df_con_clima = pd.merge(df_filtrado, df_weather, on="FECHA", how="left")
 dias_lluvia = df_con_clima[df_con_clima["weather"].isin([3, 4])]
 porcentaje_lluvia = (len(dias_lluvia) / len(df_con_clima)) * 100
 st.metric("% viajes bajo lluvia", f"{porcentaje_lluvia:.2f}%")
+
